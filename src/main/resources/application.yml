@@ -1,0 +1,16 @@
+server:
+  port: 8090
+
+#ServerConfig
+appconfig:
+  serverId: 0
+  datacenterId: 0
+  serverName: sxSpringBootExample
+  dev: true
+  userName:
+    - zhangSan
+    - lisi
+  map:
+    key1: value1
+    key2: value2
+
