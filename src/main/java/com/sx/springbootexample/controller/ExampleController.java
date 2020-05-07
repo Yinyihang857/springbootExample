@@ -4,11 +4,17 @@ package com.sx.springbootexample.controller;
 import com.sx.common.result.Result;
 import com.sx.common.result.ResultUtil;
 import com.sx.common.utils.id.SnowFlake;
+import com.sx.common.utils.test.Test;
 import com.sx.springbootexample.baen.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import sun.rmi.runtime.Log;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,9 +25,11 @@ public class ExampleController {
     @Autowired
     AppConfig appConfig;
 
+//    @Autowired
+//    Test test;
 
     /**
-     * 配置文件例子
+     * 配置文件
      */
     @RequestMapping("/conf")
     public String ConfTest() {
@@ -59,15 +67,34 @@ public class ExampleController {
     }
 
     @RequestMapping("/id")
-    public Result IdExample() {
-        Map<String, Object> map = new HashMap<>();
-        SnowFlake snowFlake = new SnowFlake(appConfig.getServerId(), appConfig.getDatacenterId());
+    public Result IdExample(HttpServletResponse response) {
+        try {
+            Thread.sleep(1000);
+            response.setHeader("checktokenresult", "0");
 
-        for (int i = 0; i < 100; i++) {
-            long id = snowFlake.nextId();
-            map.put("key" + i, id);
+            Map<String, Object> map = new HashMap<>();
+            SnowFlake snowFlake = new SnowFlake(appConfig.getServerId(), appConfig.getDatacenterId());
+
+            for (int i = 0; i < 100; i++) {
+                long id = snowFlake.nextId();
+                map.put("key" + i, Long.toString(id));
+            }
+            return ResultUtil.success(map);
+
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return ResultUtil.error("22");
+
         }
-
-        return ResultUtil.success(map);
     }
+
+    @RequestMapping(value = "/test", method = RequestMethod.POST)
+    public Result TestConf() {
+
+        Test test = new Test();
+        test.getConf();
+        return ResultUtil.success("11");
+    }
+
 }
