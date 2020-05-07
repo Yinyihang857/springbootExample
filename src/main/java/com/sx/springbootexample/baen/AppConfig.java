@@ -20,7 +20,8 @@ import java.util.Map;
  *
  */
 //@PropertySource(value = {"classpath:person.properties"})
-@Configuration
+@Component
+//@Configuration
 @ConfigurationProperties(prefix = "appconfig")
 public class AppConfig {
 
@@ -101,8 +102,4 @@ public class AppConfig {
     public void setDev(Boolean dev) {
         this.dev = dev;
     }
-//@Value("${person.maps}")
-//    private Map<String,Object> maps;
-//    private List<Object> lists;
-//    private Dog dog;
 }
