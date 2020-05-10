@@ -4,7 +4,10 @@ import com.sx.common.result.Result;
 import com.sx.common.result.ResultUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.validation.BindException;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,6 +16,9 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 /**
@@ -99,7 +105,7 @@ public class GlobalExceptionHandler {
     public Result MalformedJwtExceptionHandler(HttpServletRequest req, io.jsonwebtoken.MalformedJwtException e) {
         logger.error("accessToken格式不正确！原因是:", e);
         String token = String.format("accessToken Is %s", req.getHeader("accessToken"));
-        return ResultUtil.success(503, "accessToken is Malformed access denied", token);
+        return ResultUtil.success(603, "accessToken is Malformed access denied", token);
     }
 
     /**
@@ -111,29 +117,46 @@ public class GlobalExceptionHandler {
     public Result JwtSignatureExceptionHandler(HttpServletRequest req, io.jsonwebtoken.SignatureException e) {
         logger.error("accessToken签名与本地计算的签名不匹配, accessToken有效性不能断言，不应该被信任！原因是:", e);
         String token = String.format("accessToken Is %s", req.getHeader("accessToken"));
-        return ResultUtil.success(504, "accessToken signature does not match locally computed signature", token);
+        return ResultUtil.success(604, "accessToken signature does not match locally computed signature", token);
     }
 
-//    @ExceptionHandler(ConstraintViolationException.class)
-//    @ResponseBody
-//    public  Result resolveConstraintViolationException(ConstraintViolationException ex){
-//        Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
-//        if(!CollectionUtils.isEmpty(constraintViolations)){
-//            StringBuilder msgBuilder = new StringBuilder();
-//            for(ConstraintViolation constraintViolation :constraintViolations){
-//                msgBuilder.append(constraintViolation.getMessage()).append(",");
-//            }
-//            String errorMessage = msgBuilder.toString();
-//            if(errorMessage.length()>1){
-//                errorMessage = errorMessage.substring(0,errorMessage.length()-1);
-//            }
-//            errorWebResult.setInfo(errorMessage);
-//            return errorWebResult;
-//        }
-//        errorWebResult.setInfo(ex.getMessage());
-//        return errorWebResult;
-//    }
+    /**
+     * 单个参数校验校验异常
+     */
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseBody
+    public Result resolveConstraintViolationException(HttpServletRequest req, ConstraintViolationException ex) {
+        Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
+        StringBuilder msgBuilder = new StringBuilder();
+        msgBuilder.append("提交失败,参数校验异常！原因是:");
 
+        for (ConstraintViolation constraintViolation : constraintViolations) {
+            msgBuilder.append(constraintViolation.getMessage()).append(",");
+        }
+
+        String errMsg = msgBuilder.toString();
+
+        if (errMsg.length() > 1) {
+            errMsg = errMsg.substring(0, errMsg.length() - 1);
+        }
+
+        logger.error(req.getRequestURI() + " | " + errMsg);
+        return ResultUtil.error(500, req.getRequestURI(), errMsg);
+    }
+
+    /**
+     * 单个参数校验校验异常
+     */
+    @ExceptionHandler(BindException.class)
+    @ResponseBody
+    public Result BindExceptionException(HttpServletRequest req, BindException ex) {
+        List<String> defaultMsg = ex.getBindingResult().getAllErrors()
+                .stream()
+                .map(ObjectError::getDefaultMessage)
+                .collect(Collectors.toList());
+        logger.error(req.getRequestURI() + " | " + defaultMsg.toString());
+        return ResultUtil.error(500, req.getRequestURI(), defaultMsg);
+    }
 
     /**
      * 捕获所有总异常

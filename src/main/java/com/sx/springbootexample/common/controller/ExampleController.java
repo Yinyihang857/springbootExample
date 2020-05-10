@@ -4,7 +4,6 @@ package com.sx.springbootexample.common.controller;
 import com.sx.common.result.Result;
 import com.sx.common.result.ResultUtil;
 import com.sx.common.utils.id.SnowFlake;
-import com.sx.common.utils.test.Test;
 import com.sx.springbootexample.common.baen.AppConfig;
 import com.sx.springbootexample.common.baen.Cache;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,14 +84,6 @@ public class ExampleController {
             return ResultUtil.error("22");
 
         }
-    }
-
-    @RequestMapping(value = "/test", method = RequestMethod.POST)
-    public Result TestConf() {
-
-        Test test = new Test();
-        test.getConf();
-        return ResultUtil.success("11");
     }
 
     @RequestMapping(value = "/CachePut", method = RequestMethod.POST)

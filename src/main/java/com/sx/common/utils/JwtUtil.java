@@ -25,10 +25,10 @@ public class JwtUtil {
      * @param ttlmillis 超时时间 毫秒
      * @return Token
      */
-    public static String createJWT(Map<String, Object> claim, long ttlmillis) {
+    public static String createJWT(Map<String, Object> claim, Object tokenContent, long ttlmillis) {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
-        String payLodData = JsonUtils.toJSONString(claim);
+        String payLodData = JsonUtils.toJSONString(tokenContent);
 
         long nowMillis = System.currentTimeMillis();
         Date now = new Date(nowMillis);

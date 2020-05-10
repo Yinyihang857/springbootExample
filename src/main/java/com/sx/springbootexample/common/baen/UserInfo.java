@@ -5,17 +5,19 @@ import javax.validation.constraints.NotNull;
 /**
  * 用户信息实例
  * 用户相关信息根据系统需要set对应字段，之后逻辑中需要则依赖此实例
+ * 参数校验例子在下面
  * 2020-05-08
  */
 public class UserInfo {
     //账号
     private String accountNumber;
     //密码
+    //@NotNull(message = "密码不能为空")
     private String passWord;
     //系统Id
     private String systemId;
     //用户姓名
-    @NotNull
+    //@NotNull(message = "用户名不能为空")
     private String userName;
     //用户Id
     private String userId;
@@ -155,3 +157,53 @@ public class UserInfo {
         this.userAvatar = userAvatar;
     }
 }
+
+/**
+ * 常用的注解主要有以下几个，作用及内容如下所示
+ * @Null，标注的属性值必须为空
+ *
+ * @NotNull，标注的属性值不能为空
+ *
+ * @AssertTrue，标注的属性值必须为true
+ *
+ * @AssertFalse，标注的属性值必须为false
+ *
+ * @Min，标注的属性值不能小于min中指定的值
+ *
+ * @Max，标注的属性值不能大于max中指定的值
+ *
+ * @DecimalMin，小数值，同上
+ *
+ * @DecimalMax，小数值，同上
+ *
+ * @Negative，负数
+ *
+ * @NegativeOrZero，0或者负数
+ *
+ * @Positive，整数
+ *
+ * @PositiveOrZero，0或者整数
+ *
+ * @Size，指定字符串长度，注意是长度，有两个值，min以及max，用于指定最小以及最大长度
+ *
+ * @Digits，内容必须是数字
+ *
+ * @Past，时间必须是过去的时间
+ *
+ * @PastOrPresent，过去或者现在的时间
+ *
+ * @Future，将来的时间
+ *
+ * @FutureOrPresent，将来或者现在的时间
+ *
+ * @Pattern，用于指定一个正则表达式
+ *
+ * @NotEmpty，字符串内容非空
+ *
+ * @NotBlank，字符串内容非空且长度大于0
+ *
+ * @Email，邮箱
+ *
+ * @Range，用于指定数字，注意是数字的范围，有两个值，min以及max
+ * ————————————————
+ */

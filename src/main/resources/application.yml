@@ -2,12 +2,9 @@ server:
   port: 8090
 spring:
   mvc:
-    # 让404错误抛出异常spring boot默认不会抛出404异常
-    throw-exception-if-no-handler-found: true
-    static-path-pattern: /uploads/**
+    throw-exception-if-no-handler-found: true # 让404错误抛出异常spring boot默认不会抛出404异常
   resources:
     add-mappings: false # 禁用静态资源的自动映射，如不禁用，不存在的url将被映射到/**，servlet不有机会抛出异常
-    static-locations: file:./data/
   http:
     encoding:
       charset: utf-8
@@ -16,6 +13,8 @@ spring:
 logging:
   file:
     name: ./logs/SpringBootExample.log
+  level:
+    com.sx: debug # 这里只控制com.sx这个包下面的日志输出等级,如果全局debug将com.sx改为root
 
 #ServerConfig
 appconfig:

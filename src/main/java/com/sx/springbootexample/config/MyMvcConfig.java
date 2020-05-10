@@ -16,13 +16,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class MyMvcConfig implements WebMvcConfigurer {
     @Override
-    public void addInterceptors(InterceptorRegistry registry){
+    public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new ServiceInterceptor());
-        registry.addInterceptor(new TokenInterceptor()).excludePathPatterns("/common/**");
+        registry.addInterceptor(new TokenInterceptor()).excludePathPatterns("/common/users/sign_in", "/common/users/refresh/accessToken");
     }
-
-//    @Override
-//    public void addViewControllers(ViewControllerRegistry registry) {
-//        registry.addViewController("/").setViewName("index.html");
-//    }
 }
