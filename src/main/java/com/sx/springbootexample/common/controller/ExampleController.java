@@ -1,20 +1,17 @@
-package com.sx.springbootexample.controller;
+package com.sx.springbootexample.common.controller;
 
 
 import com.sx.common.result.Result;
 import com.sx.common.result.ResultUtil;
 import com.sx.common.utils.id.SnowFlake;
 import com.sx.common.utils.test.Test;
-import com.sx.springbootexample.baen.AppConfig;
-import com.sx.springbootexample.baen.Cache;
+import com.sx.springbootexample.common.baen.AppConfig;
+import com.sx.springbootexample.common.baen.Cache;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import sun.rmi.runtime.Log;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;

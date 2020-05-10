@@ -64,7 +64,7 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
     }
 
     /**
-     * token 格式不正确返回502
+     * token 格式不正确返回503
      *
      * @param response 响应对象
      */
@@ -77,6 +77,7 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String accessToken = request.getHeader("accessToken");
         logger.debug("accessToken is = " + accessToken);
+//        response.setHeader("refreshAccessToken", "222");
 
         if (accessToken == null || accessToken.equals("")) {
             logger.info(TokenIsNullMsg);
@@ -91,7 +92,9 @@ public class TokenInterceptor extends HandlerInterceptorAdapter {
         }
 
         if (JwtUtil.isExpired(accessToken)) {
-
+            logger.info(TokenIsExpiredMsg);
+            tokenIsExpired(response);
+            return false;
         }
 
         return true;

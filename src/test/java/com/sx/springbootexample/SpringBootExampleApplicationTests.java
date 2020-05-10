@@ -2,7 +2,7 @@ package com.sx.springbootexample;
 
 
 import com.sx.common.utils.id.SnowFlake;
-import com.sx.springbootexample.baen.AppConfig;
+import com.sx.springbootexample.common.baen.AppConfig;
 import com.sx.springbootexample.baen.User;
 import com.sx.springbootexample.token.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,8 +73,13 @@ class SpringBootExampleApplicationTests {
         long minutes = 1000 * 60 * 30;
         Date date = claims.getExpiration();
 
-        System.out.println(date.getTime());
+        long expirationTime = date.getTime();
+        long newExpirationTime = date.getTime() + minutes;
+        System.out.println(expirationTime + " 过期时间");
+        System.out.println(newExpirationTime + " 延期时间");
+
 //        claims.setExpiration()
+        claims.setExpiration(new Date(newExpirationTime));
 
     }
 

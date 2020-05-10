@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 
 
 /**
@@ -111,6 +113,27 @@ public class GlobalExceptionHandler {
         String token = String.format("accessToken Is %s", req.getHeader("accessToken"));
         return ResultUtil.success(504, "accessToken signature does not match locally computed signature", token);
     }
+
+//    @ExceptionHandler(ConstraintViolationException.class)
+//    @ResponseBody
+//    public  Result resolveConstraintViolationException(ConstraintViolationException ex){
+//        Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
+//        if(!CollectionUtils.isEmpty(constraintViolations)){
+//            StringBuilder msgBuilder = new StringBuilder();
+//            for(ConstraintViolation constraintViolation :constraintViolations){
+//                msgBuilder.append(constraintViolation.getMessage()).append(",");
+//            }
+//            String errorMessage = msgBuilder.toString();
+//            if(errorMessage.length()>1){
+//                errorMessage = errorMessage.substring(0,errorMessage.length()-1);
+//            }
+//            errorWebResult.setInfo(errorMessage);
+//            return errorWebResult;
+//        }
+//        errorWebResult.setInfo(ex.getMessage());
+//        return errorWebResult;
+//    }
+
 
     /**
      * 捕获所有总异常

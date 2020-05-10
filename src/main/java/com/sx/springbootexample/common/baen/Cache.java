@@ -1,4 +1,4 @@
-package com.sx.springbootexample.baen;
+package com.sx.springbootexample.common.baen;
 
 import java.util.HashMap;
 import java.util.Map;

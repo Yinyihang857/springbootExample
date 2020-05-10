@@ -1,13 +1,8 @@
 package com.sx.common.utils.test;
 
-import com.sx.springbootexample.baen.AppConfig;
+import com.sx.springbootexample.common.baen.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
 
 @Component
 public class Test {
